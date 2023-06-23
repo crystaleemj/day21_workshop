@@ -14,7 +14,7 @@ public class Order {
     private Integer id;
     private Integer employeeId;
     private Integer customerId;
-    private String orderDate;
+    private Date orderDate;
     private String shippedDate;
     private Integer shipperId;
     private String shipName;
