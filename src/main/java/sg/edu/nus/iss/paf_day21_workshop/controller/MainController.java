@@ -3,7 +3,7 @@ package sg.edu.nus.iss.paf_day21_workshop.controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sg.edu.nus.iss.paf_day21_workshop.model.Customer;
+import sg.edu.nus.iss.paf_day21_workshop.model.Order;
 import sg.edu.nus.iss.paf_day21_workshop.repository.CustomerRepo;
 
 @RestController
@@ -42,10 +43,16 @@ public class MainController {
 
         } catch (NoSuchElementException e) {
             // TODO: handle exception
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\": \"" + e.getMessage() + "\"}");
 
         }
         
     }
-    
+
+    @GetMapping (path = "/{customer_id}/orders", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Order>> orderById(@PathVariable("customer_id") int id){
+        List<Order> order = repo.getOrdersById(id);
+
+        return ResponseEntity.ok().body(order);
+    }
 }

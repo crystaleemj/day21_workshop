@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import sg.edu.nus.iss.paf_day21_workshop.model.Customer;
+import sg.edu.nus.iss.paf_day21_workshop.model.Order;
 
 @Repository
 public class CustomerRepo {
@@ -20,6 +21,7 @@ public class CustomerRepo {
     
     String listAllCustomers = "select * from customers limit ? offset ?";
     String getCustomerById = "select * from customers where id=?";
+    String customerOrder = "select * from orders where customer_id = ?";
 
     public List<Customer> getAllCustomers(int limit, int offset){
         List<Customer> customerList = new ArrayList<>();
@@ -43,5 +45,14 @@ public class CustomerRepo {
 
 
         return customer;
+    }
+
+    public List<Order> getOrdersById(int id){
+        List<Order> orders = new ArrayList<>();
+
+        orders = jdbcTemplate.query(customerOrder, 
+        BeanPropertyRowMapper.newInstance(Order.class), id);
+
+        return orders;
     }
 }
